@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+script_path="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+
+cat "${script_path}/shared_genre.sql" > "${script_path}/main.sql"
+cat "${script_path}/bands_band.sql" >> "${script_path}/main.sql"
+cat "${script_path}/bands_bandmember.sql" >> "${script_path}/main.sql"
+cat "${script_path}/bands_band_genre.sql" >> "${script_path}/main.sql"
+cat "${script_path}/albums_album.sql" >> "${script_path}/main.sql"    
+cat "${script_path}/albums_song.sql" >> "${script_path}/main.sql"
+cat "${script_path}/albums_album_genre.sql" >> "${script_path}/main.sql"
+cat "${script_path}/albums_song_genre.sql" >> "${script_path}/main.sql"
