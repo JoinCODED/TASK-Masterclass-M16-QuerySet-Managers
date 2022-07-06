@@ -25,16 +25,16 @@ Let's manage our query sets
 We will be creating a `singles` manager for songs.
 
 1. Add a `managers.py` file inside of the `albums` app.
-2. Create a `SingleManager` class that inherits from `models.Manager` inside of `albums/managers.py`.
-3. Add a `get_queryset` method and annotate the return as `models.QuerySet[Any]`.
+2. Create a `SingleManager` class that inherits from `models.Manager[_T]` (where `_T = TypeVar(_T, bound=models.Model)`) inside of `albums/managers.py`.
+3. Add a `get_queryset` method and annotate the return as `models.QuerySet[_T]` where `_T = TypeVar(_T, bound=models.Model)`.
    - In the method filter for `is_single=True`
 
 ### Features
 
 We will be creating a `features` manager for songs.
 
-1. Create a `FeatureManager` class that inherits from `models.Manager` inside of `albums/managers.py`.
-2. Add a `get_queryset` method and annotate the return as `models.QuerySet[Any]`.
+1. Create a `FeatureManager` class that inherits from `models.Manager[_T]` (where `_T = TypeVar(_T, bound=models.Model)`) inside of `albums/managers.py`.
+2. Add a `get_queryset` method and annotate the return as `models.QuerySet[_T]` where `_T = TypeVar(_T, bound=models.Model)`.
    - In the method filter for songs that contain the word `feat` (case-insensitive).
 
 ### Combination
