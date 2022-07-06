@@ -44,3 +44,52 @@ Go to `albums/models.py` and add 3 class variables to your `Song` model. One of 
 ### Testing
 
 Open up your python shell using `poetry run manage shell`, and import the `Song` model. Try out `Song.objects.count()`, then `Song.singles.count()`, and finally `Song.features.count()`. You should get different counts for each manager.
+
+## Manager Hero
+
+We want to implement a soft deletion on our models. First things first, let us create an abstract class to hold our attributes.
+
+### Abstract Soft Delete
+
+1. Go to `shared/models.py` and add the following model:
+
+   ```python
+   from django.utils import timezone
+
+   class SoftDeleteModel(models.Model):
+       deleted_at = models.DateTimeField(null=True, editable=False)
+
+       def soft_delete(self) -> None:
+           # Add the code here to mark the object as deleted `timezone.now` and
+           # save
+           pass
+
+       def restore(self) -> None:
+           # Add the code here to mark the object as not deleted and save
+           pass
+
+       class Meta:
+           abstract = True
+   ```
+
+2. Add the missing code in the methods above.
+3. Our band members are precious, so instead of inheriting from `models.Model` inherit from `SoftDeleteModel` in `bands/models.py`.
+
+### Soft Delete QuerySet
+
+1. Add a `shared/querysets.py` and create a `SoftDeleteQuerySet` class that inherits from `django.db.models.QuerySet`.
+2. Override the `delete` method and instead of actually deleting the object, mark the object as deleted by setting `deleted_at=timezone.now()` (where `timezone` is import from `django.utils`).
+3. Add a `restore` method
+
+### Soft Delete Manager
+
+1. Add a `shared/managers.py` and create a `SoftDeleteManager` class that inherits from `django.db.models.Manager`.
+2. In your `get_queryset` method create an instance of `SoftDeleteQuerySet` with the first positional argument being `self.model`, and then the keyword-argument `using` would be equal to `self.db`.
+3. Filter for `deleted_at=None` after creating an instance of `SoftDeleteQuerySet` (hint: you will chain a `.filter` after you've created an instance).
+
+### Integration
+
+Our band members are precious, time to protect them!
+
+1. Go to `bands/models.py` and add a `objects = SoftDeleteManager()` class variable to `BandMember`.
+2. Add another class variable `all_objects = models.Manager()` to `BandMember`.
