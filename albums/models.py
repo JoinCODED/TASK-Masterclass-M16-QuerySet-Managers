@@ -33,7 +33,7 @@ class Album(TimestampMixin, models.Model):
 
     @classmethod
     def get_top_ten(cls) -> models.QuerySet["Album"]:
-        return cls.objects.order_by("-purchase_count")[:10]
+        return cls.objects.order_by("purchase_count")[:10]
 
     @property
     def singles(self) -> models.QuerySet["Song"]:
@@ -45,7 +45,7 @@ class Album(TimestampMixin, models.Model):
 
     @property
     def top_single(self) -> Optional["Song"]:
-        return self.singles.order_by("-purchase_count").first()
+        return self.singles.order_by("purchase_count").first()
 
     @property
     def price(self) -> Decimal:
@@ -69,4 +69,4 @@ class Song(TimestampMixin, models.Model):
 
     @classmethod
     def get_top_ten(cls) -> models.QuerySet["Song"]:
-        return cls.objects.order_by("-purchase_count")[:10]
+        return cls.objects.order_by("purchase_count")[:10]

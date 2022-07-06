@@ -35,7 +35,7 @@ class Band(TimestampMixin, models.Model):
                 models.F("albums__songs__price")
                 * models.F("albums__songs__purchase_count")
             )
-        ).order_by("-song_revenue")[:10]
+        ).order_by("song_revenue")[:10]
 
     @property
     def singles(self) -> models.QuerySet["Song"]:
@@ -52,11 +52,11 @@ class Band(TimestampMixin, models.Model):
 
     @property
     def top_single(self) -> Optional["Song"]:
-        return self.singles.order_by("-purchase_count").first()
+        return self.singles.order_by("purchase_count").first()
 
     @property
     def top_feature(self) -> Optional["Song"]:
-        return self.features.order_by("-purchase_count").first()
+        return self.features.order_by("purchase_count").first()
 
 
 class BandMember(TimestampMixin, models.Model):
